@@ -84,6 +84,10 @@
         # [function] Called when animation has started
       complete: () ->
         # [function] Called when animation is complete
+      resize: () ->
+        # [function] Called when browser is resized
+      goto: () ->
+        # [function] Called when pagination is used
 
   class Plugin
     constructor: (@element, options) ->
@@ -306,6 +310,8 @@
     @options.width = width
     @options.height = height
 
+    @options.callback.resize(width, height)
+
     # Set new width and height
     $(".slidesjs-control, .slidesjs-container", $element).css
       width: width
@@ -351,6 +357,8 @@
       number = @data.total
     else if number < 1
       number = 1
+
+    @options.callback.goto(number)
 
     if typeof number is "number"
       if effect is "fade" then @_fade(number) else @_slide(number)
