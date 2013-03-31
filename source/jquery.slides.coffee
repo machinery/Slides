@@ -29,8 +29,11 @@
   defaults =
     width: 940
       # Set the default width of the slideshow.
-    height: 528
-      # Set the default height of the slideshow.
+    maxHeight: 528
+      # Set the max height of the slideshow
+    slideWidth: 940
+      # Set the slide width at which it should maintain the maxHeight
+
     start: 1
       # Set the first slide in the slideshow.
     navigation:
@@ -304,11 +307,15 @@
 
     # Get the new width and height
     width = $element.width()
-    height = (@options.height / @options.width) * width
+    # Calculate the fraction of the max slide width of the slide with the actual width
+    fraction = @options.slideWidth / width
+    # Then use that fraction to calculate a consistent height
+    height = @options.maxHeight / fraction
+    if width > @options.slideWidth
+      height = @options.maxHeight
 
     # Store new width and height
     @options.width = width
-    @options.height = height
 
     @options.callback.resize(width, height)
 
